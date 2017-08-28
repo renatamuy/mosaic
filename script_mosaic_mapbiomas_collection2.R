@@ -10,6 +10,12 @@
 #
 ################################################################################################################################
 
+# clean and memory size and vanish with scinot
+rm(list = ls())
+gc() 
+options(digits=7, scipen=999)
+memory.limit(size= 1.75e13)
+
 library(raster)
 library(rgdal)
 library(sp) 
@@ -35,7 +41,7 @@ setwd(workdir)
 
 start.time <- Sys.time()
 dir.create("outputs")
-memory.limit(size= 1.75e13)
+
 
 for(i in anos)
 	{
@@ -70,11 +76,11 @@ for(i in anos)
 	
 	#Reclass in native forest and forestry independent rasters 
 
-	ralb[ralb<5] <- NA
+	ralb[ralb<5] <- 0
 	
-	for <- ralb
-	for[for  > 8] <- 0
-	for[for != 0] <- 1
+	forest <- ralb
+	forest[forest  > 8] <- 0
+	forest[forest != 0] <- 1
 
 	nome.arq.for <-paste("mapbiomas_forest_",i,".txt", sep="")
 	writeRaster(for, filename = nome.arq.for, format="GTiff",overwrite=T)
@@ -97,4 +103,3 @@ for(i in anos)
 	}
 
 #####################################################################################################
-
